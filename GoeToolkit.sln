@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoToolkit", "GeoToolkit\GeoToolkit.csproj", "{C1063BEF-39BC-EC55-630B-6B58E2DDF42B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoToolkit.Tests", "GeoToolkit.Tests\GeoToolkit.Tests.csproj", "{2DE64A30-68FF-C2FD-1453-BAB027756FAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1063BEF-39BC-EC55-630B-6B58E2DDF42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1063BEF-39BC-EC55-630B-6B58E2DDF42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1063BEF-39BC-EC55-630B-6B58E2DDF42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1063BEF-39BC-EC55-630B-6B58E2DDF42B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE64A30-68FF-C2FD-1453-BAB027756FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE64A30-68FF-C2FD-1453-BAB027756FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE64A30-68FF-C2FD-1453-BAB027756FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE64A30-68FF-C2FD-1453-BAB027756FAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F7430AB-2195-4F1E-8271-61E79F273E79}
+	EndGlobalSection
+EndGlobal

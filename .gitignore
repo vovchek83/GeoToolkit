@@ -1,0 +1,61 @@
+################################################################################
+# .NET / C# / Visual Studio
+################################################################################
+
+# Build output
+bin/
+obj/
+
+# Visual Studio IDE
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ReSharper
+.idea/
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Test results and coverage
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage*/
+lcov.info
+
+# Publishing
+publish/
+
+# User-specific files
+*.rsuser
+*.vsp
+*.vspx
+*.sap
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+
+# Editor backup files
+*~
+*.bak
+*.orig
