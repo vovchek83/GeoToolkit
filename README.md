@@ -111,6 +111,22 @@ Bbox    BoundingBox(Feature feature);              // { MinLon, MinLat, MaxLon, 
 GeoPoint Centroid(Feature feature);
 ```
 
+## Helpers
+
+### AngleExtensions
+
+Extension methods on `double` and `float` for angle unit conversion:
+
+```csharp
+using GeoToolkit.Helpers;
+
+double rad = 90.0.ToRadians();    // → 1.5707963...
+double deg = Math.PI.ToDegrees(); // → 180.0
+
+float rad2 = 45f.ToRadians();
+float deg2 = MathF.PI.ToDegrees();
+```
+
 ## Models
 
 ```csharp
