@@ -28,13 +28,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Upload restore output
-        uses: actions/upload-artifact@v5
-        with:
-          name: restore-output
-          path: '**/obj/**'
-          retention-days: 1
-
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -54,10 +47,8 @@ jobs:
           key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
           restore-keys: nuget-${{ runner.os }}-
 
-      - name: Download restore output
-        uses: actions/download-artifact@v5
-        with:
-          name: restore-output
+      - name: Restore dependencies
+        run: dotnet restore
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
@@ -66,9 +57,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: build-output
-          path: |
-            **/bin/Release/**
-            **/obj/**
+          path: '**/bin/Release/**'
           retention-days: 1
 
   test:
@@ -82,6 +71,16 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Restore dependencies
+        run: dotnet restore
 
       - name: Download build output
         uses: actions/download-artifact@v5
