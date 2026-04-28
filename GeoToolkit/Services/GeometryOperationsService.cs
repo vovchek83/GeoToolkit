@@ -1,7 +1,9 @@
 using GeoJSON.Net.Feature;
+using GeoJSON.Net.Geometry;
 using GeoToolkit.Helpers;
 using GeoToolkit.Interfaces;
 using NetTopologySuite.Simplify;
+using NtsGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
 
 namespace GeoToolkit.Services;
 
@@ -84,4 +86,34 @@ public class GeometryOperationsService : IGeometryOperationsService, ISingletonS
         var repaired = GeoJsonNtsConverter.ToNts(feature.Geometry).Buffer(0);
         return new Feature(GeoJsonNtsConverter.ToGeoJson(repaired));
     }
+
+    /// <summary>
+    /// Returns the Well-Known Text (WKT) representation of a feature's geometry.
+    /// </summary>
+    /// <param name="feature">Feature whose geometry to serialize.</param>
+    /// <returns>WKT string, e.g. <c>POLYGON ((30 50, 31 50, ...))</c>.</returns>
+    public string ToWkt(Feature feature)
+        => GeoJsonNtsConverter.ToNts(feature.Geometry).ToText();
+
+    /// <summary>
+    /// Returns the Well-Known Text (WKT) representation of all features in a collection
+    /// as a <c>GEOMETRYCOLLECTION</c>.
+    /// </summary>
+    /// <param name="featureCollection">Collection of features to serialize.</param>
+    /// <returns>WKT string, e.g. <c>GEOMETRYCOLLECTION (POLYGON (...), POLYGON (...))</c>.</returns>
+    public string ToWkt(FeatureCollection featureCollection)
+    {
+        var geometries = featureCollection.Features
+            .Select(f => GeoJsonNtsConverter.ToNts(f.Geometry))
+            .ToArray();
+        return NtsGeometryFactory.Default.CreateGeometryCollection(geometries).ToText();
+    }
+
+    /// <summary>
+    /// Returns the Well-Known Text (WKT) representation of a polygon.
+    /// </summary>
+    /// <param name="polygon">Polygon to serialize.</param>
+    /// <returns>WKT string, e.g. <c>POLYGON ((30 50, 31 50, ...))</c>.</returns>
+    public string ToWkt(Polygon polygon)
+        => GeoJsonNtsConverter.ToNts(polygon).ToText();
 }

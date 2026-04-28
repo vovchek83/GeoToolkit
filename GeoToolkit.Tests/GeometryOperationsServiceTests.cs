@@ -93,4 +93,52 @@ public class GeometryOperationsServiceTests
 
         result.Geometry.Should().BeAssignableTo<Polygon>();
     }
+
+    [Fact]
+    public void ToWkt_Feature_ReturnsPolygonWkt()
+    {
+        var feature = MakeRectFeature(50.0, 30.0, 51.0, 31.0);
+
+        var wkt = _sut.ToWkt(feature);
+
+        wkt.Should().StartWith("POLYGON");
+        wkt.Should().Contain("30");
+        wkt.Should().Contain("50");
+    }
+
+    [Fact]
+    public void ToWkt_Polygon_ReturnsPolygonWkt()
+    {
+        var polygon = (Polygon)MakeRectFeature(50.0, 30.0, 51.0, 31.0).Geometry;
+
+        var wkt = _sut.ToWkt(polygon);
+
+        wkt.Should().StartWith("POLYGON");
+        wkt.Should().Contain("30");
+        wkt.Should().Contain("50");
+    }
+
+    [Fact]
+    public void ToWkt_FeatureCollection_ReturnsGeometryCollectionWkt()
+    {
+        var fc = new FeatureCollection();
+        fc.Features.Add(MakeRectFeature(50.0, 30.0, 51.0, 31.0));
+        fc.Features.Add(MakeRectFeature(52.0, 32.0, 53.0, 33.0));
+
+        var wkt = _sut.ToWkt(fc);
+
+        wkt.Should().StartWith("GEOMETRYCOLLECTION");
+        wkt.Should().Contain("POLYGON");
+    }
+
+    [Fact]
+    public void ToWkt_EmptyFeatureCollection_ReturnsEmptyGeometryCollectionWkt()
+    {
+        var fc = new FeatureCollection();
+
+        var wkt = _sut.ToWkt(fc);
+
+        wkt.Should().StartWith("GEOMETRYCOLLECTION");
+        wkt.Should().Contain("EMPTY");
+    }
 }
