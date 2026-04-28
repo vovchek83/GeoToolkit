@@ -94,10 +94,11 @@ Feature Simplify(Feature feature, double toleranceMeters);
 bool    IsValid(Feature feature);
 Feature Repair(Feature feature);
 
-// WKT serialization
+// WKT serialization / parsing
 string ToWkt(Feature feature);
 string ToWkt(FeatureCollection featureCollection); // returns GEOMETRYCOLLECTION (...)
 string ToWkt(Polygon polygon);
+Feature FromWkt(string wkt);
 ```
 
 ### IMeasurementService

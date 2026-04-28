@@ -14,4 +14,5 @@ public interface IGeometryOperationsService
     string ToWkt(Feature feature);
     string ToWkt(FeatureCollection featureCollection);
     string ToWkt(Polygon polygon);
+    Feature FromWkt(string wkt);
 }

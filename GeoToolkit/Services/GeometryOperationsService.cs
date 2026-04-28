@@ -2,6 +2,7 @@ using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using GeoToolkit.Helpers;
 using GeoToolkit.Interfaces;
+using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NtsGeometryFactory = NetTopologySuite.Geometries.GeometryFactory;
 
@@ -116,4 +117,13 @@ public class GeometryOperationsService : IGeometryOperationsService, ISingletonS
     /// <returns>WKT string, e.g. <c>POLYGON ((30 50, 31 50, ...))</c>.</returns>
     public string ToWkt(Polygon polygon)
         => GeoJsonNtsConverter.ToNts(polygon).ToText();
+
+    /// <summary>
+    /// Parses a Well-Known Text (WKT) string into a <see cref="Feature"/>.
+    /// </summary>
+    /// <param name="wkt">WKT string, e.g. <c>POLYGON ((30 50, 31 50, ...))</c>.</param>
+    /// <returns>A <see cref="Feature"/> wrapping the parsed geometry.</returns>
+    /// <exception cref="NetTopologySuite.IO.ParseException">Thrown when <paramref name="wkt"/> is not valid WKT.</exception>
+    public Feature FromWkt(string wkt)
+        => new(GeoJsonNtsConverter.ToGeoJson(new WKTReader().Read(wkt)));
 }

@@ -141,4 +141,34 @@ public class GeometryOperationsServiceTests
         wkt.Should().StartWith("GEOMETRYCOLLECTION");
         wkt.Should().Contain("EMPTY");
     }
+
+    [Fact]
+    public void FromWkt_PolygonWkt_ReturnsFeatureWithPolygon()
+    {
+        var wkt = "POLYGON ((30 50, 31 50, 31 51, 30 51, 30 50))";
+
+        var feature = _sut.FromWkt(wkt);
+
+        feature.Geometry.Should().BeAssignableTo<Polygon>();
+    }
+
+    [Fact]
+    public void FromWkt_RoundTrip_PreservesGeometry()
+    {
+        var original = MakeRectFeature(50.0, 30.0, 51.0, 31.0);
+        var wkt = _sut.ToWkt(original);
+
+        var restored = _sut.FromWkt(wkt);
+        var restoredWkt = _sut.ToWkt(restored);
+
+        restoredWkt.Should().Be(wkt);
+    }
+
+    [Fact]
+    public void FromWkt_InvalidWkt_Throws()
+    {
+        var act = () => _sut.FromWkt("NOT VALID WKT");
+
+        act.Should().Throw<Exception>();
+    }
 }
