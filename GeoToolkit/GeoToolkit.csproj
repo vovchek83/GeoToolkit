@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>GeoToolkit</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>vovchek83</Authors>
     <Description>Utility library for GeoJSON geometry operations: coordinate transforms, polygon union, geometric set operations, elevation adjustments, measurements, and spatial queries.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -23,7 +23,7 @@
   <ItemGroup>
     <PackageReference Include="GeoidHeightsDotNet" Version="1.0.6" />
     <PackageReference Include="GeoJSON.Net" Version="1.4.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
     <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="4.0.0" />
     <PackageReference Include="Scrutor" Version="7.0.0" />
