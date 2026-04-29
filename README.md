@@ -9,7 +9,7 @@ A .NET utility library for geospatial operations — coordinate transformations,
 | `ICoordinateTransformService` | WGS84 ↔ UTM conversions (Snyder 1987 formulas) |
 | `IElevationAdjustmentService` | Ellipsoidal ↔ orthometric height using EGM96 |
 | `IGeoidService` | EGM96 geoid undulation lookups |
-| `IGeoUnionService` | Union multiple GeoJSON polygons into one |
+| `IGeoUnionService` | Union, symmetric difference, and dissolve operations on GeoJSON polygons |
 | `IGeometryOperationsService` | Intersection, difference, buffer, simplify, validate, repair |
 | `IMeasurementService` | Haversine distance, spherical area and perimeter |
 | `ISpatialQueryService` | Point-in-polygon, bounding box, centroid |
@@ -80,8 +80,28 @@ double GetUndulation(double latitude, double longitude); // EGM96 geoid height i
 ### IGeoUnionService
 
 ```csharp
-// Returns a single GeoJSON Feature whose geometry is the union of all inputs
-Feature Union(IEnumerable<Feature> polygonFeatures);
+// Merge all polygon features in a collection into one feature
+FeatureCollection Union(FeatureCollection featureCollection);
+
+// Merge a list of Polygon objects into one feature
+FeatureCollection Union(IEnumerable<Polygon> polygons);
+
+// Merge two features directly
+Feature Union(Feature a, Feature b);
+
+// Area present in either A or B but not in both (XOR)
+Feature SymmetricDifference(Feature a, Feature b);
+
+// Group features by a property value and union within each group
+// Each output feature carries the group value as a property
+FeatureCollection Dissolve(FeatureCollection featureCollection, string propertyKey);
+```
+
+**Example — Dissolve by zone:**
+
+```csharp
+var result = geoUnionService.Dissolve(featureCollection, "zone");
+// features sharing the same "zone" value are merged into one geometry
 ```
 
 ### IGeometryOperationsService

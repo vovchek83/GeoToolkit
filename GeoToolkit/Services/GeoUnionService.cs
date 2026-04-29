@@ -8,7 +8,7 @@ namespace GeoToolkit.Services;
 /// <summary>
 /// Computes the geometric union of GeoJSON polygons using NetTopologySuite.
 /// </summary>
-public class GeoUnionService : IGeoUnionService, IScopedService
+public class GeoUnionService : IGeoUnionService, ISingletonService
 {
     /// <summary>
     /// Unions all polygon features in the given <see cref="FeatureCollection"/> into a single feature.
@@ -47,5 +47,55 @@ public class GeoUnionService : IGeoUnionService, IScopedService
     {
         var features = polygons.Select(p => new Feature(p)).ToList();
         return Union(new FeatureCollection(features));
+    }
+
+    /// <summary>
+    /// Unions two features into a single feature.
+    /// </summary>
+    public Feature Union(Feature a, Feature b)
+    {
+        var result = GeoJsonNtsConverter.ToNts(a.Geometry).Union(GeoJsonNtsConverter.ToNts(b.Geometry));
+        return new Feature(GeoJsonNtsConverter.ToGeoJson(result), new Dictionary<string, object>
+        {
+            { "name", "Union Result" }
+        });
+    }
+
+    /// <summary>
+    /// Returns the area present in either feature but not in both (XOR).
+    /// </summary>
+    public Feature SymmetricDifference(Feature a, Feature b)
+    {
+        var result = GeoJsonNtsConverter.ToNts(a.Geometry).SymmetricDifference(GeoJsonNtsConverter.ToNts(b.Geometry));
+        return new Feature(GeoJsonNtsConverter.ToGeoJson(result), new Dictionary<string, object>
+        {
+            { "name", "Symmetric Difference Result" }
+        });
+    }
+
+    /// <summary>
+    /// Groups features by <paramref name="propertyKey"/> and unions all features
+    /// within each group into one feature, preserving the group value as a property.
+    /// </summary>
+    public FeatureCollection Dissolve(FeatureCollection featureCollection, string propertyKey)
+    {
+        var groups = featureCollection.Features.GroupBy(f =>
+            f.Properties != null && f.Properties.TryGetValue(propertyKey, out var v)
+                ? v?.ToString() ?? string.Empty
+                : string.Empty);
+
+        var dissolved = new List<Feature>();
+        foreach (var group in groups)
+        {
+            var unionFc = Union(new FeatureCollection(group.ToList()));
+            if (unionFc.Features.Count == 0) continue;
+
+            dissolved.Add(new Feature(
+                unionFc.Features[0].Geometry,
+                new Dictionary<string, object> { { propertyKey, group.Key } }
+            ));
+        }
+
+        return new FeatureCollection(dissolved);
     }
 }
